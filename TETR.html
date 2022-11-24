@@ -48,16 +48,17 @@
     var mTimer
     var firstView
     var gameState = 0;
-     
+    
+    
     function beginGame()
     {
+        setcanvas();
         choose = 0;
         previewWnd.style.display="none";
         gameState=0;
         speed=1;
         outTime=1100-speed*100;
-        score=0;
-        scoreBar.innerHTML="Score : " + score;
+        score=-1;
         if(gameState!=0)return;
         firstView=0;
         for(j=0;j<16;j++)
@@ -137,7 +138,6 @@
         randBar();
         speed=Math.floor(score/3000)+1;
         outTime=1100-speed*100;
-        scoreBar.innerHTML="Score : " + score;
         speedBar.innerHTML="Speed : " + speed;
         window.clearInterval(mTimer);
         mTimer=window.setInterval("moveBar()",outTime);
@@ -208,7 +208,7 @@
     }
     function randBar()
     {
-        score = score + 1 ;
+        getScore();
         Instead();
         randSet();
         if(firstView<9){
@@ -241,7 +241,9 @@
     </HEAD>
      
     <BODY onload="beginGame()" bgcolor="#EAF0F8" onkeydown="return keyControl();" topmargin="10" leftmargin="10" rightmargin="10" bottommargin="0" scroll=no>
-        
+    <img id="image" src="NP.png" alt="select" usemap="#choises"> </img>
+    <br>
+    
     <table border="0" width="100%" cellspacing="0" cellpadding="0" height="100%"><tr><td width="100%" height="100%" align="center">
     <table cellspacing=2 cellpadding=0 class=gt border=0 bordercolor="#EAF0F8" bgcolor="#EAF0F8">
     <tr>
@@ -258,7 +260,6 @@
         </tbody>
         </table>
     </td>
-    <h1 id=scoreBar style="color:#15bd55">Score : 0 </h1>
     <br>
     <input type=button id="move" style="font-family:Tahoma; background-color:greenyellow; font-size:9pt; width:100px" value="turn" onclick="return Turn();"></input>
     <br>
@@ -287,7 +288,7 @@
     </tr>
     </table>
     </td></tr></table>
-    <img id="image" src="NP.png" alt="select" usemap="#choises"> </img>
+    <canvas id="mycanvas" width="200" height="100">  </canvas>
     <map name = "choises">
         <area shape="rect" coords="0,0,180,130" alt="Squ" onclick="Squ()" title="Circle">
         <area shape="rect" coords="250,0,500,100" alt="Straight" onclick="Straight()" title="Straight"> 
@@ -490,4 +491,18 @@
         }
     }
     
+    function setcanvas(){
+        var scoretext = document.getElementById("mycanvas");
+        var ctx = scoretext.getContext("2d");
+        ctx.font = "30px Arial";
+        ctx.fillText("Score:0" , 10, 50);
+    }
+    function getScore(){
+        var scoretext = document.getElementById("mycanvas");
+        var ctx = scoretext.getContext("2d");
+        ctx.clearRect(0, 0, 200, 100);
+        score = score + 1;
+        ctx.fillText("Score:" + score, 10, 50);
+    }
+
     </script>
